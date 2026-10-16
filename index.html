@@ -171,9 +171,9 @@
             </button>
         </div>
 
-        <!-- عداد الزيارات الحي -->
+        <!-- عداد الزيارات الحي المركزي -->
         <div class="counter-box">
-            عدد زيارات الموقع: <span id="visit-count">1052</span>
+            عدد زيارات الموقع: <span id="visit-count">جاري التحميل...</span>
         </div>
 
         <div class="footer">
@@ -195,14 +195,20 @@
             document.body.removeChild(a);
         }
 
-        // عداد زيارات دقيق ومضمون يتحدث مع كل تحديث للصفحة
-        let visits = localStorage.getItem('jamra_visits');
-        if (!visits) {
-            visits = 1050; // الرقم الابتدائي للبداية
+        // عداد زيارات مركزي حقيقي يتم تحديثه عالمياً عبر الإنترنت
+        async function getVisitorCount() {
+            try {
+                // استخدام خدمة عداد حقيقية ومستقرة (api.countapi.xyz)
+                let response = await fetch('https://api.countapi.xyz/hit/jamrawonar/visits');
+                let data = await response.json();
+                document.getElementById('visit-count').innerText = data.value;
+            } catch (error) {
+                // نظام احتياطي في حال بطء الاتصال بالخادم
+                document.getElementById('visit-count').innerText = '1';
+            }
         }
-        visits = parseInt(visits) + 1;
-        localStorage.setItem('jamra_visits', visits);
-        document.getElementById('visit-count').innerText = visits;
+
+        getVisitorCount();
     </script>
 
 </body>
