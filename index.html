@@ -112,20 +112,6 @@
         .btn-qr { background: linear-gradient(135deg, #ff2a2a, #b30000); border: none; cursor: pointer; width: 100%; }
         .btn-qr:hover { opacity: 0.9; box-shadow: 0 0 15px rgba(255, 42, 42, 0.8); }
 
-        .counter-box {
-            margin-top: 15px;
-            font-size: 0.85rem;
-            color: #aaa;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid #222;
-        }
-        .counter-box span {
-            color: #ff2a2a;
-            font-weight: bold;
-        }
-
         .footer {
             margin-top: 15px;
             font-size: 0.8rem;
@@ -171,11 +157,6 @@
             </button>
         </div>
 
-        <!-- عداد الزيارات الحي المركزي -->
-        <div class="counter-box">
-            عدد زيارات الموقع: <span id="visit-count">جاري التحميل...</span>
-        </div>
-
         <div class="footer">
             &copy; 2026 جمرة ونارة. جميع الحقوق محفوظة.
         </div>
@@ -185,31 +166,4 @@
         // دالة توليد وتحميل QR Code حقيقي
         function downloadQR() {
             const currentUrl = window.location.href;
-            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(currentUrl)}`;
-            
-            const a = document.createElement('a');
-            a.href = qrApiUrl;
-            a.download = 'Jamra_W_Nara_QR.jpg';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        // عداد زيارات مركزي حقيقي يتم تحديثه عالمياً عبر الإنترنت
-        async function getVisitorCount() {
-            try {
-                // استخدام خدمة عداد حقيقية ومستقرة (api.countapi.xyz)
-                let response = await fetch('https://api.countapi.xyz/hit/jamrawonar/visits');
-                let data = await response.json();
-                document.getElementById('visit-count').innerText = data.value;
-            } catch (error) {
-                // نظام احتياطي في حال بطء الاتصال بالخادم
-                document.getElementById('visit-count').innerText = '1';
-            }
-        }
-
-        getVisitorCount();
-    </script>
-
-</body>
-</html>
+            const qrApiUrl
