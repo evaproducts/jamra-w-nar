@@ -79,7 +79,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         .btn {
             display: flex;
@@ -109,8 +109,22 @@
         .btn-phone { border-color: #ff2a2a; }
         .btn-phone:hover { background: #ff2a2a; color: #fff; box-shadow: 0 0 15px rgba(255, 42, 42, 0.6); }
 
-        .btn-qr { background: linear-gradient(135deg, #ff2a2a, #b30000); border: none; }
+        .btn-qr { background: linear-gradient(135deg, #ff2a2a, #b30000); border: none; cursor: pointer; width: 100%; }
         .btn-qr:hover { opacity: 0.9; box-shadow: 0 0 15px rgba(255, 42, 42, 0.8); }
+
+        .counter-box {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #aaa;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #222;
+        }
+        .counter-box span {
+            color: #ff2a2a;
+            font-weight: bold;
+        }
 
         .footer {
             margin-top: 15px;
@@ -122,7 +136,7 @@
 <body>
 
     <div class="container">
-        <!-- الشعار واسم المحل المعدل -->
+        <!-- الشعار واسم المحل -->
         <div class="logo-area">
             <h1>جمرة ونارة</h1>
             <p>جميع مستلزمات التبغ والأراجيل</p>
@@ -151,16 +165,50 @@
                 <i class="fa-brands fa-facebook"></i> صفحتنا على الفيسبوك
             </a>
 
-            <!-- زر تحميل QR Code -->
-            <a href="https://evaproducts.github.io/jamra-w-nara/" download="Jamra_W_Nara_QR.jpg" class="btn btn-qr">
-                <i class="fa-solid fa-qrcode"></i> تحميل QR Code الخاص بالموقع
-            </a>
+            <!-- زر توليد وتحميل QR Code حقيقي ديناميكياً -->
+            <button onclick="downloadQR()" class="btn btn-qr">
+                <i class="fa-solid fa-qrcode"></i> توليد وتحميل QR Code للموقع
+            </button>
+        </div>
+
+        <!-- عداد الزيارات الحي -->
+        <div class="counter-box">
+            عدد زيارات الموقع: <span id="visit-count">جاري التحميل...</span>
         </div>
 
         <div class="footer">
             &copy; 2026 جمرة ونارة. جميع الحقوق محفوظة.
         </div>
     </div>
+
+    <script>
+        // دالة توليد وتحميل QR Code حقيقي لرابط الصفحة الحالي
+        function downloadQR() {
+            const currentUrl = window.location.href;
+            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(currentUrl)}`;
+            
+            const a = document.createElement('a');
+            a.href = qrApiUrl;
+            a.download = 'Jamra_W_Nara_QR.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // جلب وتحديث عداد الزيارات الحقيقي مع كل زِيارة (حتى لو من نفس الجهاز)
+        async function updateVisitCounter() {
+            try {
+                // استخدام عداد عام يعتمد على اسم الموقع
+                const response = await fetch('https://api.counterapi.dev/v1/evaproducts-github/jamra-w-nara/hit');
+                const data = await response.json();
+                document.getElementById('visit-count').innerText = data.count;
+            } catch (error) {
+                document.getElementById('visit-count').innerText = '1+';
+            }
+        }
+
+        updateVisitCounter();
+    </script>
 
 </body>
 </html>
